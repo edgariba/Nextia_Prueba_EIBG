@@ -33,18 +33,11 @@ public class UsersEntity {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    @Column(name = "modified_by")
-    private String modifiedBy;
-
-    @Column(name = "mofified_date")
+    @Column(name = "modified_date")
     private Date modifiedDate;
 
     @Column(name = "role")
@@ -111,28 +104,12 @@ public class UsersEntity {
         isDeleted = deleted;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
     }
 
     public Date getModifiedDate() {
