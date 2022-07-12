@@ -24,6 +24,7 @@ public class ConstantText {
     public static final String LOGIN_ERROR = "Usuario o contraseña icorrectos.";
     public static final String LOGIN_OK = "Sesión iniciada.";
     public static final String USER_INVALID = "El usuario no es valido.";
+    public static final String USER_DUPLICATE = "El email ya existe.";
     public static final String USER_PASS = "Se cambio exitosamente la contraseña..";
     public static final String USER_NOT_ACTIVE = "El usuario no se encuentra activo.";
 }

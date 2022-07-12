@@ -1,5 +1,7 @@
 package com.nextia.PruebaEb.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -32,6 +34,7 @@ public class UsersEntity {
     private String email;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "is_deleted")

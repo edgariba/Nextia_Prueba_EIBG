@@ -9,13 +9,13 @@ import com.nextia.PruebaEb.Security.JwtUtil;
 import com.nextia.PruebaEb.Utils.ConstantText;
 import com.nextia.PruebaEb.Utils.GenerateUuid;
 import com.nextia.PruebaEb.Utils.Header.HeaderResponse;
-import com.nextia.PruebaEb.Ws.Request.Users.LoginRequest;
-import com.nextia.PruebaEb.Ws.Request.Users.PasswordRequest;
-import com.nextia.PruebaEb.Ws.Request.Users.UserAddRequest;
-import com.nextia.PruebaEb.Ws.Request.Users.UserUpdateRequest;
+import com.nextia.PruebaEb.Ws.Request.Users.*;
 import com.nextia.PruebaEb.Ws.Response.LoginResponse;
 import com.nextia.PruebaEb.Ws.Response.UserResponse;
+import com.nextia.PruebaEb.Ws.Response.UsersPagResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,6 +71,16 @@ public class UsersBusinessImpl implements UsersBusiness {
     }
 
     @Override
+    public ResponseEntity<UsersPagResponse> findAllUsers(UsersPagRequest request) {
+        String msg;
+        UsersPagResponse response;
+        Page<UsersEntity> allUsers = usersDao.findAllByIsDeleted(false, PageRequest.of(request.page, request.maxResults));
+        msg = ConstantText.MSG_LIST;
+        response = new UsersPagResponse(new HeaderResponse(ConstantText.SUCCESS, HttpStatus.OK.value(), msg), allUsers);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<LoginResponse> loginUser(LoginRequest request) {
         String msg;
         LoginResponse response;
@@ -91,6 +101,10 @@ public class UsersBusinessImpl implements UsersBusiness {
     public ResponseEntity<HeaderResponse> addUser(UserAddRequest request) {
         String msg;
         HeaderResponse response;
+        Optional<UsersEntity> byEmail = usersDao.findByEmail(request.getEmail());
+        if (byEmail.isPresent()) {
+            throw new ConflictException(ConstantText.USER_DUPLICATE);
+        }
         UsersEntity usersEntity = new UsersEntity();
         usersEntity.setHashUser(new GenerateUuid().generateUuid());
         usersEntity.setCreatedDate(new Date());
@@ -112,7 +126,6 @@ public class UsersBusinessImpl implements UsersBusiness {
         userEntity.setModifiedDate(new Date());
         userEntity.setName(request.getName());
         userEntity.setLastName(request.getLastName());
-        userEntity.setEmail(request.getEmail());
         usersDao.save(userEntity);
         msg = ConstantText.UPDATE_MSG;
         response = new HeaderResponse(ConstantText.SUCCESS, HttpStatus.OK.value(), msg);

@@ -5,12 +5,10 @@ import com.nextia.PruebaEb.Entity.UsersEntity;
 import com.nextia.PruebaEb.Exceptions.ConflictException;
 import com.nextia.PruebaEb.Utils.ConstantText;
 import com.nextia.PruebaEb.Utils.Header.HeaderResponse;
-import com.nextia.PruebaEb.Ws.Request.Users.LoginRequest;
-import com.nextia.PruebaEb.Ws.Request.Users.PasswordRequest;
-import com.nextia.PruebaEb.Ws.Request.Users.UserAddRequest;
-import com.nextia.PruebaEb.Ws.Request.Users.UserUpdateRequest;
+import com.nextia.PruebaEb.Ws.Request.Users.*;
 import com.nextia.PruebaEb.Ws.Response.LoginResponse;
 import com.nextia.PruebaEb.Ws.Response.UserResponse;
+import com.nextia.PruebaEb.Ws.Response.UsersPagResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -163,4 +161,29 @@ public class UsersController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Metodo para obtener el listado de usuarios
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/getAll")
+    public ResponseEntity<UsersPagResponse> getAll(@RequestBody UsersPagRequest request) {
+        UsersPagResponse response;
+        String msg;
+        try {
+            return usersBusiness.findAllUsers(request);
+        } catch (ConflictException e) {
+            msg = e.getMessage();
+            response = new UsersPagResponse(new HeaderResponse(ConstantText.CONFLICT, HttpStatus.CONFLICT.value(), msg), null);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            msg = e.getMessage();
+            response = new UsersPagResponse(new HeaderResponse(ConstantText.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), msg), null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
+
+

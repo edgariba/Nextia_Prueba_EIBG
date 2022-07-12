@@ -3,7 +3,6 @@ package com.nextia.PruebaEb.Ws.Request.Users;
 public class UserUpdateRequest {
     public String name;
     public String lastName;
-    public String email;
     public String password;
     public String hashUser;
 
@@ -21,14 +20,6 @@ public class UserUpdateRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
