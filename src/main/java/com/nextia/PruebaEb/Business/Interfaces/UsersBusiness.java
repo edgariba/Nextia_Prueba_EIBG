@@ -5,13 +5,14 @@ import com.nextia.PruebaEb.Ws.Request.Users.LoginRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.PasswordRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.UserAddRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.UserUpdateRequest;
+import com.nextia.PruebaEb.Ws.Response.LoginResponse;
 import com.nextia.PruebaEb.Ws.Response.UserResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface UsersBusiness {
     ResponseEntity<UserResponse> getUserByHash(String hashUser);
 
-    ResponseEntity<UserResponse> loginUser(LoginRequest request);
+    ResponseEntity<LoginResponse> loginUser(LoginRequest request);
 
     ResponseEntity<HeaderResponse> addUser(UserAddRequest request);
 

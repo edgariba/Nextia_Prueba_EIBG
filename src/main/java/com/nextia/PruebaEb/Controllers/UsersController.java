@@ -1,6 +1,7 @@
 package com.nextia.PruebaEb.Controllers;
 
 import com.nextia.PruebaEb.Business.Interfaces.UsersBusiness;
+import com.nextia.PruebaEb.Entity.UsersEntity;
 import com.nextia.PruebaEb.Exceptions.ConflictException;
 import com.nextia.PruebaEb.Utils.ConstantText;
 import com.nextia.PruebaEb.Utils.Header.HeaderResponse;
@@ -8,12 +9,15 @@ import com.nextia.PruebaEb.Ws.Request.Users.LoginRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.PasswordRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.UserAddRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.UserUpdateRequest;
+import com.nextia.PruebaEb.Ws.Response.LoginResponse;
 import com.nextia.PruebaEb.Ws.Response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
 
 /**
  * * @author Edgar Ivan Barrera
@@ -56,18 +60,18 @@ public class UsersController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResponseEntity<UserResponse> loginUser(@RequestBody LoginRequest request) {
-        UserResponse response;
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest request) {
+        LoginResponse response;
         String msg;
         try {
             return usersBusiness.loginUser(request);
         } catch (ConflictException e) {
             msg = e.getMessage();
-            response = new UserResponse(new HeaderResponse(ConstantText.CONFLICT, HttpStatus.CONFLICT.value(), msg), null);
+            response = new LoginResponse(new HeaderResponse(ConstantText.CONFLICT, HttpStatus.CONFLICT.value(), msg), null);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             msg = e.getMessage();
-            response = new UserResponse(new HeaderResponse(ConstantText.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), msg), null);
+            response = new LoginResponse(new HeaderResponse(ConstantText.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), msg), null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

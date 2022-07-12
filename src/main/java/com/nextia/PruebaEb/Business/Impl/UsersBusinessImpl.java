@@ -4,6 +4,8 @@ import com.nextia.PruebaEb.Business.Interfaces.UsersBusiness;
 import com.nextia.PruebaEb.Dao.UsersDao;
 import com.nextia.PruebaEb.Entity.UsersEntity;
 import com.nextia.PruebaEb.Exceptions.ConflictException;
+import com.nextia.PruebaEb.Pojos.UserLogin;
+import com.nextia.PruebaEb.Security.JwtUtil;
 import com.nextia.PruebaEb.Utils.ConstantText;
 import com.nextia.PruebaEb.Utils.GenerateUuid;
 import com.nextia.PruebaEb.Utils.Header.HeaderResponse;
@@ -11,6 +13,7 @@ import com.nextia.PruebaEb.Ws.Request.Users.LoginRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.PasswordRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.UserAddRequest;
 import com.nextia.PruebaEb.Ws.Request.Users.UserUpdateRequest;
+import com.nextia.PruebaEb.Ws.Response.LoginResponse;
 import com.nextia.PruebaEb.Ws.Response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +24,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
+import java.util.Optional;
 
 @Service("usersBusinessImpl")
 @Transactional(propagation = Propagation.SUPPORTS, isolation = Isolation.DEFAULT)
@@ -32,6 +37,28 @@ public class UsersBusinessImpl implements UsersBusiness {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+
+    /**
+     * Metodo para crear un usuario por default
+     */
+    @PostConstruct
+    private void postConstruct() {
+        UsersEntity user = new UsersEntity();
+        Optional<UsersEntity> byEmail = usersDao.findByEmail("test@test.com");
+        if (!byEmail.isPresent()) {
+            user.setPassword(passwordEncoder.encode("test"));
+            user.setHashUser(new GenerateUuid().generateUuid());
+            user.setName("test");
+            user.setLastName("test");
+            user.setEmail("test@test.com");
+            user.setCreatedDate(new Date());
+            usersDao.save(user);
+        }
+    }
 
     @Override
     public ResponseEntity<UserResponse> getUserByHash(String hashUser) {
@@ -44,19 +71,19 @@ public class UsersBusinessImpl implements UsersBusiness {
     }
 
     @Override
-    public ResponseEntity<UserResponse> loginUser(LoginRequest request) {
+    public ResponseEntity<LoginResponse> loginUser(LoginRequest request) {
         String msg;
-        UserResponse response;
+        LoginResponse response;
         UsersEntity usersEntity = usersDao.findByEmail(request.getEmail()).orElseThrow(() -> new ConflictException(ConstantText.LOGIN_ERROR));
-        if(usersEntity.isDeleted()){
+        if (usersEntity.isDeleted()) {
             throw new ConflictException(ConstantText.USER_NOT_ACTIVE);
         }
         boolean matches = passwordEncoder.matches(request.getPassword(), usersEntity.getPassword());
-        if(!matches){
+        if (!matches) {
             throw new ConflictException(ConstantText.LOGIN_ERROR);
         }
         msg = ConstantText.LOGIN_OK;
-        response = new UserResponse(new HeaderResponse(ConstantText.SUCCESS, HttpStatus.OK.value(), msg), usersEntity);
+        response = new LoginResponse(new HeaderResponse(ConstantText.SUCCESS, HttpStatus.OK.value(), msg), new UserLogin(jwtUtil.getJWTToken(request.getEmail()), usersEntity));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

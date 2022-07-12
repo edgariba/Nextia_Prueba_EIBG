@@ -9,7 +9,10 @@ import java.util.Date;
  * @author Edgar Ivan Barrera
  */
 @Entity
-@Table(name = "t_users")
+@Table(name = "t_users", indexes = {
+        @Index(name = "idx_usersentity_email_unq", columnList = "email", unique = true),
+        @Index(name = "idx_usersentity_hash_user_unq", columnList = "hash_user", unique = true)
+})
 public class UsersEntity {
 
     @Id
@@ -25,7 +28,7 @@ public class UsersEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
