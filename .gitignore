@@ -23,6 +23,7 @@ target/
 /nbproject/private/
 /nbbuild/
 /dist/
+/filesUploads/
 /nbdist/
 /.nb-gradle/
 build/

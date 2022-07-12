@@ -1,7 +1,6 @@
 package com.nextia.PruebaEb.Controllers;
 
 import com.nextia.PruebaEb.Business.Interfaces.UsersBusiness;
-import com.nextia.PruebaEb.Entity.UsersEntity;
 import com.nextia.PruebaEb.Exceptions.ConflictException;
 import com.nextia.PruebaEb.Utils.ConstantText;
 import com.nextia.PruebaEb.Utils.Header.HeaderResponse;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.PostConstruct;
 
 /**
  * * @author Edgar Ivan Barrera
@@ -32,6 +29,7 @@ public class UsersController {
 
     /**
      * Get de usuario
+     *
      * @param hashUser
      * @return
      */
@@ -54,6 +52,7 @@ public class UsersController {
 
     /**
      * Login de usuario
+     *
      * @param request
      * @return
      */
@@ -76,6 +75,7 @@ public class UsersController {
 
     /**
      * POST para añadir usuario
+     *
      * @param request
      * @return
      */
@@ -98,6 +98,7 @@ public class UsersController {
 
     /**
      * PUT para actualizar un usuario
+     *
      * @param request
      * @return
      */
@@ -120,6 +121,7 @@ public class UsersController {
 
     /**
      * Delete usuario por hash
+     *
      * @param hashUser
      * @return
      */
@@ -142,6 +144,7 @@ public class UsersController {
 
     /**
      * Post para cambiar la contraseña
+     *
      * @param request
      * @return
      */
@@ -164,6 +167,7 @@ public class UsersController {
 
     /**
      * Metodo para obtener el listado de usuarios
+     *
      * @param request
      * @return
      */

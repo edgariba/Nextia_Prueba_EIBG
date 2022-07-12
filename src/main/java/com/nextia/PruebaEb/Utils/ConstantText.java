@@ -19,6 +19,10 @@ public class ConstantText {
     //API
     public static final String API_V1 = "/api/v1/";
 
+    //FILES
+    public static final String FILES_UPLOAD = "Se subierón exitosamente los archivos.";
+    public static final String DIRECTORY_CREATED = "Directorio creado exitosamente.";
+
 
     //USUARIOS
     public static final String LOGIN_ERROR = "Usuario o contraseña icorrectos.";
