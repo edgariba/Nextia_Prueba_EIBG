@@ -15,7 +15,10 @@ public class ConstantText {
     public static final String MSG_DELETE = "Se elimino correctamente el registro.";
     public static final String SAVE_MSG = "Se guardo correctamente el registro.";
     public static final String UPDATE_MSG = "Se actualizo correctamente el registro.";
-    public static final String NOT_GET = "El valor buscado no es valido o no existe el registro.";
+
+    //API
+    public static final String API_V1 = "/api/v1/";
+
 
     //USUARIOS
     public static final String LOGIN_ERROR = "Usuario o contraseña icorrectos.";
