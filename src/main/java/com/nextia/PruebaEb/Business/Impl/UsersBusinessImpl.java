@@ -60,6 +60,11 @@ public class UsersBusinessImpl implements UsersBusiness {
         }
     }
 
+    /**
+     * Otner usuario por hash
+     * @param hashUser
+     * @return
+     */
     @Override
     public ResponseEntity<UserResponse> getUserByHash(String hashUser) {
         String msg;
@@ -70,6 +75,11 @@ public class UsersBusinessImpl implements UsersBusiness {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Obtener todos los usuarios
+     * @param request
+     * @return
+     */
     @Override
     public ResponseEntity<UsersPagResponse> findAllUsers(UsersPagRequest request) {
         String msg;
@@ -80,6 +90,11 @@ public class UsersBusinessImpl implements UsersBusiness {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Login de usuario
+     * @param request
+     * @return
+     */
     @Override
     public ResponseEntity<LoginResponse> loginUser(LoginRequest request) {
         String msg;
@@ -97,6 +112,11 @@ public class UsersBusinessImpl implements UsersBusiness {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Agregar un usuario
+     * @param request
+     * @return
+     */
     @Override
     public ResponseEntity<HeaderResponse> addUser(UserAddRequest request) {
         String msg;
@@ -118,6 +138,11 @@ public class UsersBusinessImpl implements UsersBusiness {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Actualizar usuario
+     * @param request
+     * @return
+     */
     @Override
     public ResponseEntity<HeaderResponse> updateUser(UserUpdateRequest request) {
         String msg;
@@ -132,6 +157,11 @@ public class UsersBusinessImpl implements UsersBusiness {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Eliminar usuario
+     * @param hashUser
+     * @return
+     */
     @Override
     public ResponseEntity<HeaderResponse> deleteUser(String hashUser) {
         String msg;
@@ -145,6 +175,11 @@ public class UsersBusinessImpl implements UsersBusiness {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * Cambiar la contrasseña
+     * @param request
+     * @return
+     */
     @Override
     public ResponseEntity<HeaderResponse> changePassword(PasswordRequest request) {
         String msg;

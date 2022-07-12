@@ -11,7 +11,9 @@ import java.util.Optional;
 @Repository
 public interface UsersDao extends JpaRepository<UsersEntity, Long> {
     Optional<UsersEntity> findByHashUser(String hashUser);
+
     Optional<UsersEntity> findByEmail(String email);
+
     boolean existsByEmail(String email);
 
     Page<UsersEntity> findAllByIsDeleted(boolean isDeleted, Pageable pageable);
