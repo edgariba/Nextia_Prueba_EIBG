@@ -1,14 +1,13 @@
 package com.nextia.PruebaEb.Controllers;
 
 import com.nextia.PruebaEb.Business.Interfaces.FilesBusiness;
-import com.nextia.PruebaEb.Business.Interfaces.UsersBusiness;
 import com.nextia.PruebaEb.Exceptions.ConflictException;
 import com.nextia.PruebaEb.Utils.ConstantText;
 import com.nextia.PruebaEb.Utils.Header.HeaderResponse;
-import com.nextia.PruebaEb.Ws.Request.Users.LoginRequest;
 import com.nextia.PruebaEb.Ws.Response.Files.FilesResponse;
-import com.nextia.PruebaEb.Ws.Response.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +29,7 @@ public class FilesController {
 
     /**
      * Metodo para subir los archivos
+     *
      * @param file
      * @return
      */
@@ -52,6 +52,7 @@ public class FilesController {
 
     /**
      * Metodo para obtener todos los archivos
+     *
      * @return
      */
     @GetMapping(value = "/loadAllFiles")
@@ -71,4 +72,39 @@ public class FilesController {
         }
     }
 
+    /**
+     * Metodo para obtener el rchivo por nombre
+     *
+     * @param filename
+     * @return
+     */
+    @GetMapping("/get/{filename}")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+        Resource file = filesBusiness.loadFile(filename);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+    /**
+     * Eliminar archivo por nombre
+     * @param filename
+     * @return
+     */
+    @DeleteMapping(value = "/delete/{filename}")
+    public ResponseEntity<HeaderResponse> deleteFiles(@PathVariable String filename) {
+        HeaderResponse response;
+        String msg;
+        try {
+            return filesBusiness.deleteFile(filename);
+        } catch (ConflictException e) {
+            msg = e.getMessage();
+            response = new HeaderResponse(ConstantText.CONFLICT, HttpStatus.CONFLICT.value(), msg);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            msg = e.getMessage();
+            response = new HeaderResponse(ConstantText.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), msg);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
