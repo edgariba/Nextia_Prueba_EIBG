@@ -26,7 +26,8 @@ public class JwtUtil {
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                //Expira en 20 minutos a partir de la fecha creada
+                .setExpiration(new Date(System.currentTimeMillis() + 1200000))
                 .signWith(SignatureAlgorithm.HS512,
                         secretKey.getBytes()).compact();
 
