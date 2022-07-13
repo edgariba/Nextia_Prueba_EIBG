@@ -1,6 +1,7 @@
 package com.nextia.PruebaEb.Business.Impl;
 
 import com.nextia.PruebaEb.Business.Interfaces.FilesBusiness;
+import com.nextia.PruebaEb.Exceptions.ConflictException;
 import com.nextia.PruebaEb.Pojos.FilesPojo;
 import com.nextia.PruebaEb.Utils.ConstantText;
 import com.nextia.PruebaEb.Utils.Header.HeaderResponse;
@@ -61,7 +62,7 @@ public class FilesBusinessImpl implements FilesBusiness {
             response = new HeaderResponse(ConstantText.SUCCESS, HttpStatus.OK.value(), msg);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            throw new RuntimeException("No se ha podido almacenar el archivo. Error: " + e.getMessage());
+            throw new ConflictException("No se ha podido almacenar el archivo. Error: " + e.getMessage());
         }
     }
 
